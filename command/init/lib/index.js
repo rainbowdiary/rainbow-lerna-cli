@@ -133,6 +133,7 @@ class initCommand extends Command {
       packageName: npmName,
       packageVersion: version,
     });
+    console.log("templateNpm", templateNpm);
     if (!(await templateNpm.exists())) {
       const spinner = spinnerStart("正在下载模板..."); // 命令行加载效果
       await sleep();
@@ -293,26 +294,44 @@ class initCommand extends Command {
   async getProjectInfo() {
     let projectInfo = {};
     const promptArr = [];
+    // 1. 选择创建项目或组件
+    const { type } = await inquirer.prompt({
+      type: "list",
+      name: "type",
+      message: "请选择初始化类型",
+      default: TYPE_PROJECT,
+      choices: [
+        {
+          name: "项目",
+          value: TYPE_PROJECT,
+        },
+        {
+          name: "组件",
+          value: TYPE_COMPONENT,
+        },
+      ],
+    });
+    /**
+     * 1. 首字符必须为英文字符
+     * 2. 尾字符必须为英文或数字，不能为字符
+     * 3. 字符仅允许"_-"
+     */
     const isValidName = (v) => {
       return /^[a-zA-Z]+([-][a-zA-Z][a-zA-Z0-9]*|[_][a-zA-Z][a-zA-Z0-9]*|[a-zA-Z0-9])*$/.test(
         v
       );
     };
     const isValidProjectName = isValidName(this.projectName);
+    const title = type === TYPE_PROJECT ? "项目" : "组件";
     const projectNamePrompt = {
       type: "input",
       name: "projectName",
-      message: "请输出项目名称",
+      message: `请输出${title}名称`,
       validate(v) {
         var done = this.async();
         setTimeout(function () {
-          /**
-           * 1. 首字符必须为英文字符
-           * 2. 尾字符必须为英文或数字，不能为字符
-           * 3. 字符仅允许"_-"
-           */
           if (!isValidName(v)) {
-            done("请输入合法的项目名称");
+            done(`请输入合法的${title}名称`);
             return;
           }
           done(null, true);
@@ -331,7 +350,7 @@ class initCommand extends Command {
       {
         type: "input",
         name: "projectVersion",
-        message: "请输出项目版本",
+        message: `请输出${title}版本`,
         default: "1.0.0",
         validate(v) {
           var done = this.async();
@@ -355,23 +374,6 @@ class initCommand extends Command {
       }
     );
 
-    // 1. 选择创建项目或组件
-    const { type } = await inquirer.prompt({
-      type: "list",
-      name: "type",
-      message: "请选择初始化类型",
-      default: TYPE_PROJECT,
-      choices: [
-        {
-          name: "项目",
-          value: TYPE_PROJECT,
-        },
-        {
-          name: "组件",
-          value: TYPE_COMPONENT,
-        },
-      ],
-    });
     // 2. 获取项目的基本信息
     if (type === TYPE_PROJECT) {
       const project = await inquirer.prompt(promptArr);
@@ -381,11 +383,39 @@ class initCommand extends Command {
         ...project,
       };
     } else if (type === TYPE_COMPONENT) {
+      // 2. 获取组件的基本信息
+      const descriptionPrompt = {
+        type: "input",
+        name: "componentDescription",
+        message: "请输出组件描述信息",
+        default: "",
+        validate(v) {
+          var done = this.async();
+          setTimeout(function () {
+            /**
+             * 1. 首字符必须为英文字符
+             * 2. 尾字符必须为英文或数字，不能为字符
+             * 3. 字符仅允许"_-"
+             */
+            if (!v) {
+              done("请输入组件描述信息");
+              return;
+            }
+            done(null, true);
+          }, 0);
+        },
+      };
+      promptArr.push(descriptionPrompt);
+      const component = await inquirer.prompt(promptArr);
+      projectInfo = {
+        ...projectInfo,
+        type,
+        ...component,
+      };
     }
     this.template = this.template.filter((template) =>
       template.tag.includes(type)
     );
-    console.log(this.template);
     // 格式化项目名称为className形式 AbcEfg=>abc-efg
     if (projectInfo.projectName) {
       projectInfo.projectName = require("kebab-case")(
@@ -395,6 +425,9 @@ class initCommand extends Command {
     }
     if (projectInfo.projectVersion) {
       projectInfo.version = projectInfo.projectVersion;
+    }
+    if (projectInfo.componentDescription) {
+      projectInfo.description = projectInfo.componentDescription;
     }
     return projectInfo;
   }
