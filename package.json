@@ -1,0 +1,20 @@
+{
+  "name": "rainbow-lerna-cli",
+  "version": "1.0.0",
+  "description": "使用lerna管理的脚手架项目",
+  "main": "index.js",
+  "homepage": "https://gitee.com/rainbowdiary/rainbow-lerna-cli",
+  "bin": {
+    "rainbow-lerna-cli": "bin/index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "lerna": "^4.0.0"
+  },
+  "dependencies": {}
+}

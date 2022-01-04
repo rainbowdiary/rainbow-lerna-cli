@@ -1,0 +1,36 @@
+{
+  "name": "@rainbow-lerna-cli/exec",
+  "version": "1.0.0",
+  "description": "新建@rainbow-lerna-cli/exec 动态加载模块",
+  "keywords": [
+    "exec",
+    "lerna",
+    "@rainbow-lerna-cli"
+  ],
+  "author": "rainbowdiary <zengcai666@gmail.com>",
+  "homepage": "https://gitee.com/rainbowdiary/rainbow-lerna-cli/core/exec",
+  "license": "ISC",
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitee.com/rainbowdiary/rainbow-lerna-cli"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "dependencies": {
+    "@rainbow-lerna-cli/package": "file:../../models/package",
+    "@rainbow-lerna-cli/log": "file:../../utils/log",
+    "@rainbow-lerna-cli/utils": "file:../../utils/utils"
+  }
+}

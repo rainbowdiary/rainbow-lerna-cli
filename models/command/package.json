@@ -1,0 +1,31 @@
+{
+  "name": "@rainbow-lerna-cli/command",
+  "version": "1.0.0",
+  "description": "@rainbow-lerna-cli/command",
+  "author": "rainbowdiary <1265496580@qq.com>",
+  "homepage": "https://gitee.com/rainbowdiary/rainbow-lerna-cli/core/command",
+  "license": "ISC",
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitee.com/rainbowdiary/rainbow-lerna-cli"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "dependencies": {
+    "semver": "^7.3.5",
+    "colors": "^1.4.0",
+    "@rainbow-lerna-cli/log": "file:../../utils/log"
+  }
+}

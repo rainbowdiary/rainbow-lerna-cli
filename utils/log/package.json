@@ -1,0 +1,32 @@
+{
+  "name": "@rainbow-lerna-cli/log",
+  "version": "0.0.1",
+  "description": "@rainbow-lerna-cli log",
+  "keywords": [
+    "log"
+  ],
+  "author": "rainbowdiary <zengcai666@gmail.com>",
+  "homepage": "https://gitee.com/rainbowdiary/rainbow-lerna-cli/utils/log",
+  "license": "ISC",
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitee.com/rainbowdiary/rainbow-lerna-cli"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "dependencies": {
+    "npmlog": "^5.0.1"
+  }
+}
