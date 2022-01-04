@@ -78,7 +78,6 @@ class initCommand extends Command {
    * 标准模板安装
    */
   async installNormalTemplate() {
-    let installRet;
     // 拷贝缓存目录中的模板代码到当前目录
     const spinner = spinnerStart("正在安装模板...");
     await sleep();
@@ -97,16 +96,8 @@ class initCommand extends Command {
       spinner.stop(true);
       log.success("模板安装成功");
     }
-    const ignore = [
-      "node_moduels",
-      "public/**",
-      "README.*",
-      "LICENSE",
-      ".editorconfig",
-      ".env.*",
-      "src/icons/**",
-      "src/assets/**",
-    ];
+    const templateIgnore = this.templateInfo.ignore || [];
+    const ignore = ["node_moduels/**", ...templateIgnore];
     // ejs模板渲染package.jso
     await this.ejsRender({ ignore });
     const { installCommand, startCommand } = this.templateInfo;
@@ -301,6 +292,7 @@ class initCommand extends Command {
 
   async getProjectInfo() {
     let projectInfo = {};
+    const promptArr = [];
     const isValidName = (v) => {
       return /^[a-zA-Z]+([-][a-zA-Z][a-zA-Z0-9]*|[_][a-zA-Z][a-zA-Z0-9]*|[a-zA-Z0-9])*$/.test(
         v
@@ -330,7 +322,6 @@ class initCommand extends Command {
         return v;
       },
     };
-    const promptArr = [];
     if (isValidProjectName) {
       projectInfo.projectName = this.projectName;
     } else {
@@ -391,6 +382,10 @@ class initCommand extends Command {
       };
     } else if (type === TYPE_COMPONENT) {
     }
+    this.template = this.template.filter((template) =>
+      template.tag.includes(type)
+    );
+    console.log(this.template);
     // 格式化项目名称为className形式 AbcEfg=>abc-efg
     if (projectInfo.projectName) {
       projectInfo.projectName = require("kebab-case")(
