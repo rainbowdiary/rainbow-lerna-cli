@@ -111,7 +111,29 @@ class initCommand extends Command {
    * 自定义模板安装
    */
   async installCustomTemplate() {
-    console.log("custom template");
+    // 查询自定义模板的入口文件
+    if (await this.templateNpm.exists()) {
+      const rootFile = this.templateNpm.getRootFilePath();
+      if (fs.existsSync(rootFile)) {
+        log.notice("开始执行自定义模板");
+        const options = {
+          ...this.templateInfo,
+          cwd: process.cwd(),
+        };
+
+        const code = `require(${JSON.stringify(rootFile)})(${JSON.stringify(
+          options
+        )})`;
+        log.verbose("code", code);
+        await execAsync("node", ["-e", code], {
+          stdio: "inherit",
+          // cwd: process.cwd(),
+        });
+        log.success("自定义模板安装成功");
+      }
+    } else {
+      throw new Error("自定义模板入口文件不存在！");
+    }
   }
 
   /**
@@ -133,7 +155,6 @@ class initCommand extends Command {
       packageName: npmName,
       packageVersion: version,
     });
-    console.log("templateNpm", templateNpm);
     if (!(await templateNpm.exists())) {
       const spinner = spinnerStart("正在下载模板..."); // 命令行加载效果
       await sleep();
