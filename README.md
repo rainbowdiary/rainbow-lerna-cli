@@ -1,5 +1,7 @@
 # rainbow-lerna-cli
 
+参考项目: https://github.com/imooc-lego/imooc-cli/blob/master/packages/init/lib/index.js
+
 #### Description
 
 使用 lerna 管理一个脚手架项目

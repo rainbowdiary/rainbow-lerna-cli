@@ -13,4 +13,4 @@ const init = require('@rainbow-lerna-cli/init');
 ` rainbow-cli init test --debug --targetPath ${path}rainbow-lerna-cli/command/init`
 
 _测试命令_
-`rainbow-cli init test --debug --targetPath /Users/rainbow/Documents/前端/脚手架开发/project/rainbow-lerna-cli/command/init`
+`rainbow-cli init --debug --targetPath /Users/rainbow/Documents/前端/脚手架开发/project/rainbow-lerna-cli/command/init projectName`
