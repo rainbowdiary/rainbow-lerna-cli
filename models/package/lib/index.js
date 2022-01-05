@@ -89,6 +89,7 @@ class Package {
     await this.prepare();
     // 判断最新版本是否存在
     const newestPackageVersion = await getNpmLatestVersion(this.packageName);
+    console.log("newestPackageVersion", newestPackageVersion);
     // 判断最新版本号对应的路径是否存在
     const latestFilePath = this.getSpecificCacheFilePath(newestPackageVersion);
     // 如果最新版本路径不存在则安装

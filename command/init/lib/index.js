@@ -116,18 +116,23 @@ class initCommand extends Command {
       const rootFile = this.templateNpm.getRootFilePath();
       if (fs.existsSync(rootFile)) {
         log.notice("开始执行自定义模板");
+        const templatePath = path.resolve(
+          this.templateNpm.cacheFilePath,
+          "template"
+        );
         const options = {
-          ...this.templateInfo,
-          cwd: process.cwd(),
+          templateInfo: this.templateInfo,
+          projectInfo: this.projectInfo,
+          templatePath,
+          targetPath: process.cwd(),
         };
-
         const code = `require(${JSON.stringify(rootFile)})(${JSON.stringify(
           options
         )})`;
         log.verbose("code", code);
         await execAsync("node", ["-e", code], {
           stdio: "inherit",
-          // cwd: process.cwd(),
+          cwd: process.cwd(),
         });
         log.success("自定义模板安装成功");
       }
